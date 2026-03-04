@@ -49,35 +49,35 @@ import { CartService } from '../services/cart.service';
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label class="block text-sm opacity-70 mb-1">Nome *</label>
-                <input name="nome" [(ngModel)]="form.nome" required
+                <label for="nome" class="block text-sm opacity-70 mb-1">Nome *</label>
+                <input id="nome" name="nome" [(ngModel)]="form.nome" required
                   class="w-full rounded-lg px-4 py-3 text-sm outline-none"
                   style="background-color: rgba(245,240,232,0.1); border: 1px solid rgba(245,240,232,0.2); color: #f5f0e8"
                   placeholder="Il tuo nome">
               </div>
               <div>
-                <label class="block text-sm opacity-70 mb-1">Cognome *</label>
-                <input name="cognome" [(ngModel)]="form.cognome" required
+                <label for="cognome" class="block text-sm opacity-70 mb-1">Cognome *</label>
+                <input id="cognome" name="cognome" [(ngModel)]="form.cognome" required
                   class="w-full rounded-lg px-4 py-3 text-sm outline-none"
                   style="background-color: rgba(245,240,232,0.1); border: 1px solid rgba(245,240,232,0.2); color: #f5f0e8"
                   placeholder="Il tuo cognome">
               </div>
               <div>
-                <label class="block text-sm opacity-70 mb-1">Telefono *</label>
-                <input name="telefono" [(ngModel)]="form.telefono" required pattern="[0-9+\\s\\-]{8,15}"
+                <label for="telefono" class="block text-sm opacity-70 mb-1">Telefono *</label>
+                <input id="telefono" name="telefono" [(ngModel)]="form.telefono" required pattern="[0-9+\\s\\-]{8,15}"
                   class="w-full rounded-lg px-4 py-3 text-sm outline-none"
                   style="background-color: rgba(245,240,232,0.1); border: 1px solid rgba(245,240,232,0.2); color: #f5f0e8"
                   placeholder="+39 123 456 7890">
               </div>
               <div>
-                <label class="block text-sm opacity-70 mb-1">Data di ritiro *</label>
-                <input name="data" type="date" [(ngModel)]="form.data" required [min]="minDate"
+                <label for="data" class="block text-sm opacity-70 mb-1">Data di ritiro *</label>
+                <input id="data" name="data" type="date" [(ngModel)]="form.data" required [min]="minDate"
                   class="w-full rounded-lg px-4 py-3 text-sm outline-none"
                   style="background-color: rgba(245,240,232,0.1); border: 1px solid rgba(245,240,232,0.2); color: #f5f0e8">
               </div>
               <div>
-                <label class="block text-sm opacity-70 mb-1">Ora di ritiro *</label>
-                <input name="ora" type="time" [(ngModel)]="form.ora" required
+                <label for="ora" class="block text-sm opacity-70 mb-1">Ora di ritiro *</label>
+                <input id="ora" name="ora" type="time" [(ngModel)]="form.ora" required
                   min="08:00" max="20:00"
                   class="w-full rounded-lg px-4 py-3 text-sm outline-none"
                   style="background-color: rgba(245,240,232,0.1); border: 1px solid rgba(245,240,232,0.2); color: #f5f0e8">
@@ -86,8 +86,8 @@ import { CartService } from '../services/cart.service';
           </div>
 
           <div class="p-5 rounded-xl" style="background-color: rgba(245,240,232,0.05); border: 1px solid rgba(245,240,232,0.15)">
-            <label class="block text-sm mb-2" style="color: #D4AF37">Note per lo staff (allergie, richieste speciali)</label>
-            <textarea name="note" [(ngModel)]="form.note" rows="3"
+            <label for="note" class="block text-sm mb-2" style="color: #D4AF37">Note per lo staff (allergie, richieste speciali)</label>
+            <textarea id="note" name="note" [(ngModel)]="form.note" rows="3"
               placeholder="Es. allergia alle noci, senza glutine..."
               class="w-full rounded-lg px-4 py-3 text-sm resize-none outline-none"
               style="background-color: rgba(245,240,232,0.1); border: 1px solid rgba(245,240,232,0.2); color: #f5f0e8"></textarea>
