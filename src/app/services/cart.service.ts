@@ -7,6 +7,7 @@ export interface CartItem {
   price: number;
   quantity: number;
   details?: string;
+  weight?: number; // peso in kg (per torte)
 }
 
 @Injectable({ providedIn: 'root' })
@@ -19,6 +20,9 @@ export class CartService {
   );
   readonly itemCount = computed(() =>
     this._items().reduce((sum, item) => sum + item.quantity, 0)
+  );
+  readonly totalWeight = computed(() =>
+    this._items().reduce((sum, item) => sum + (item.weight ?? 0) * item.quantity, 0)
   );
 
   addItem(item: Omit<CartItem, 'quantity'>): void {

@@ -397,7 +397,8 @@ export class WizardComponent {
       name: `Torta Personalizzata ${this.weight()}kg`,
       category: 'pasticceria',
       price: this.customCakePrice(),
-      details
+      details,
+      weight: this.weight()
     });
     this.weight.set(0.5);
     this.selectedFlavors.set([]);
@@ -430,7 +431,8 @@ export class WizardComponent {
       name: `${cake.nome} ${this.modalWeight()}kg`,
       category: 'pasticceria',
       price: this.modalCakePrice(),
-      details
+      details,
+      weight: this.modalWeight()
     });
     this.closeModal();
   }

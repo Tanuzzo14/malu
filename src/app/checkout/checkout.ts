@@ -1,4 +1,4 @@
-import { Component, inject, output, signal } from '@angular/core';
+import { Component, inject, output, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, NgForm } from '@angular/forms';
 import { CartService } from '../services/cart.service';
@@ -78,11 +78,17 @@ import { CartService } from '../services/cart.service';
               <div>
                 <label for="ora" class="block text-sm opacity-70 mb-1">Ora di ritiro *</label>
                 <input id="ora" name="ora" type="time" [(ngModel)]="form.ora" required
-                  min="08:00" max="20:00"
+                  [min]="form.data === pickupConstraints().minDate ? pickupConstraints().minTime : '09:00'"
+                  max="19:00"
                   class="w-full rounded-lg px-4 py-3 text-sm outline-none"
                   style="background-color: rgba(245,240,232,0.1); border: 1px solid rgba(245,240,232,0.2); color: #f5f0e8">
               </div>
             </div>
+            @if (pickupConstraints().message) {
+              <div class="mt-4 p-3 rounded-lg text-sm" style="background-color: rgba(212,175,55,0.1); border: 1px solid rgba(212,175,55,0.3); color: #D4AF37">
+                {{ pickupConstraints().message }}
+              </div>
+            }
           </div>
 
           <div class="p-5 rounded-xl" style="background-color: rgba(245,240,232,0.05); border: 1px solid rgba(245,240,232,0.15)">
@@ -136,14 +142,63 @@ export class CheckoutComponent {
   errorMessage = signal('');
   successMessage = signal('');
 
+  readonly pickupConstraints = computed(() => {
+    const totalWeight = this.cart.totalWeight();
+    const now = new Date();
+
+    if (totalWeight > 5) {
+      const daysRequired = Math.ceil((totalWeight - 5) / 5);
+      const minPickup = new Date(now);
+      minPickup.setDate(minPickup.getDate() + daysRequired);
+      const weightThreshold = daysRequired * 5;
+      return {
+        minDate: minPickup.toISOString().split('T')[0],
+        minTime: '09:00',
+        message: `⚖️ Il tuo ordine supera i ${weightThreshold}kg: il ritiro è disponibile tra ${daysRequired} giorn${daysRequired === 1 ? 'o' : 'i'} (orari: 09:00–19:00).`
+      };
+    } else if (totalWeight > 3) {
+      const sixHoursLater = new Date(now.getTime() + 6 * 60 * 60 * 1000);
+      const hour = sixHoursLater.getHours();
+      const minute = sixHoursLater.getMinutes();
+      if (hour * 60 + minute <= 19 * 60) {
+        const minTime = `${String(Math.max(hour, 9)).padStart(2, '0')}:${String(hour < 9 ? 0 : minute).padStart(2, '0')}`;
+        return {
+          minDate: now.toISOString().split('T')[0],
+          minTime,
+          message: `⚖️ Il tuo ordine supera i 3kg: il ritiro è disponibile almeno 6 ore dopo l'ordine (dalle ${minTime} di oggi, orari: 09:00–19:00).`
+        };
+      } else {
+        const tomorrow = new Date(now);
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        return {
+          minDate: tomorrow.toISOString().split('T')[0],
+          minTime: '09:00',
+          message: `⚖️ Il tuo ordine supera i 3kg: il ritiro è disponibile il giorno seguente (orari: 09:00–19:00).`
+        };
+      }
+    } else {
+      const tomorrow = new Date(now);
+      tomorrow.setDate(tomorrow.getDate() + 1);
+      return { minDate: tomorrow.toISOString().split('T')[0], minTime: '09:00', message: '' };
+    }
+  });
+
   get minDate(): string {
-    const tomorrow = new Date();
-    tomorrow.setDate(tomorrow.getDate() + 1);
-    return tomorrow.toISOString().split('T')[0];
+    return this.pickupConstraints().minDate;
   }
 
   async submitOrder(form: NgForm): Promise<void> {
     if (form.invalid) return;
+
+    // Validate pickup datetime against weight-based constraints
+    const constraints = this.pickupConstraints();
+    const selectedDateTime = new Date(`${this.form.data}T${this.form.ora}`);
+    const minDateTime = new Date(`${constraints.minDate}T${constraints.minTime}`);
+    if (selectedDateTime < minDateTime) {
+      this.errorMessage.set(`Orario di ritiro non valido: il ritiro deve essere a partire dal ${constraints.minDate} alle ${constraints.minTime}.`);
+      return;
+    }
+
     this.isSubmitting.set(true);
     this.errorMessage.set('');
     this.successMessage.set('');
