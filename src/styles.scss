@@ -1,0 +1,17 @@
+@import "tailwindcss";
+
+@theme {
+  --color-luxury: #1a0f0a;
+  --color-luxury-light: #2a1a12;
+  --color-cream: #f5f0e8;
+  --color-gold: #D4AF37;
+  --color-gold-light: #e8c84a;
+  --font-heading: 'Playfair Display', serif;
+  --font-body: 'Montserrat', sans-serif;
+}
+
+body {
+  background-color: var(--color-luxury);
+  color: var(--color-cream);
+  font-family: var(--font-body);
+}

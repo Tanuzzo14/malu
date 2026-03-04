@@ -1,0 +1,10 @@
+name = "malu-worker"
+main = "index.js"
+compatibility_date = "2024-01-01"
+
+[vars]
+OWNER_NAME = "Malu Pasticceria"
+
+# Set secrets via CLI:
+# wrangler secret put BREVO_API_KEY
+# wrangler secret put OWNER_EMAIL
