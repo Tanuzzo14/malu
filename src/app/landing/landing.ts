@@ -12,13 +12,14 @@ import { Component, output } from '@angular/core';
       </div>
 
       <div class="text-center z-10 px-8">
-        <h1 class="text-8xl md:text-9xl tracking-widest mb-2" style="font-family: 'Playfair Display', serif; color: #D4AF37">
-          Malu
-        </h1>
-        <div class="w-24 h-px mx-auto my-6 opacity-60" style="background-color: #D4AF37"></div>
-        <p class="text-sm uppercase mb-16" style="color: rgba(245,240,232,0.7); font-family: 'Montserrat', sans-serif; letter-spacing: 0.3em">
-          Pasticceria &nbsp;·&nbsp; Tavola Calda &nbsp;·&nbsp; Gelateria
-        </p>
+        <img
+          src="/logo.png"
+          alt="Malù - Pasticceria Gelateria Tavola Calda"
+          width="420"
+          height="277"
+          class="mx-auto mb-10 drop-shadow-2xl"
+          style="width: clamp(220px, 45vw, 420px); height: auto" />
+
 
         <button
           (click)="start.emit()"
